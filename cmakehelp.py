@@ -51,11 +51,15 @@ def main():
                 matches.append((source, keyword))
                 questions.append((index, "%s (%s)" % (keyword, source)))
                 index += 1
-        if len(matches) == 0:
-            tui.error("No match found")
 
-        for pos, txt in questions:
-            print "%2d: %s" % (pos, txt)
+        if len(matches) > 0:
+            print
+            print "# Matching topics:"
+            for pos, txt in questions:
+                print "%2d: %s" % (pos, txt)
+        else:
+            tui.error("No match found")
+        print
 
         answer = showPrompt(hasTopic=len(matches) > 0)
 
