@@ -16,14 +16,11 @@ def showDoc(source, term):
     p2.wait()
 
 
-def promptSearchTerm(default):
-    return tui.editLine(default, "Enter search term: ")
-
 def main():
     if len(sys.argv) > 1:
         term = sys.argv[1]
     else:
-        term = promptSearchTerm("")
+        term = tui.editLine(None, "Enter search term: ")
         if term is None:
             return
 
@@ -40,25 +37,20 @@ def main():
         if len(matches) == 0:
             tui.error("No match found")
 
-        questions.append(("s", "Search"))
-        questions.append(("q", "Quit"))
+        for pos, txt in questions:
+            print "%2d: %s" % (pos, txt)
 
-        try:
-            answer = tui.selectFromList("Select topic", questions, default=None)
-        except KeyboardInterrupt:
-            print
-            return
+        answer = tui.editLine(None, "Select topic or enter search term: ")
 
-        if answer is None or answer == "q":
-            return
-        elif answer == "s":
-            term = promptSearchTerm(term)
-            if term is None:
-                return
-        else:
+        if answer.isdigit():
             index = int(answer) - 1
             match = matches[index]
             showDoc(*match)
+        elif answer != "":
+            term = answer
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print
