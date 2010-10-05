@@ -21,7 +21,7 @@ def promptSearchTerm(default):
 
 def main():
     if len(sys.argv) > 1:
-        term = sys.argv[1].lower()
+        term = sys.argv[1]
     else:
         term = promptSearchTerm("")
         if term is None:
@@ -32,7 +32,7 @@ def main():
         matches = []
         index = 1
         for source in SOURCES:
-            lst = findMatches(source, term)
+            lst = findMatches(source, term.lower())
             for entry in lst:
                 matches.append((source, entry))
                 questions.append((index, "%s (%s)" % (entry, source)))
