@@ -16,12 +16,29 @@ def showDoc(source, keyword):
     p2.wait()
 
 
+def showPrompt(hasTopic):
+    if hasTopic:
+        prompt = "Enter topic number or search term"
+    else:
+        prompt = "Enter search term"
+    prompt += " (empty imput or 'q' to quit): "
+    try:
+        answer = tui.editLine("", prompt)
+    except KeyboardInterrupt:
+        print
+        return None
+    answer = answer.lower()
+    if answer == "q":
+        return ""
+    return answer
+    
+
 def main():
     if len(sys.argv) > 1:
         term = sys.argv[1]
     else:
-        term = tui.editLine("", "Enter search term (empty input to quit): ")
-        if term == "":
+        term = showPrompt(hasTopic=False)
+        if term is "":
             return
 
     while True:
@@ -29,7 +46,7 @@ def main():
         matches = []
         index = 1
         for source in SOURCES:
-            lst = findMatches(source, term.lower())
+            lst = findMatches(source, term)
             for keyword in lst:
                 matches.append((source, keyword))
                 questions.append((index, "%s (%s)" % (keyword, source)))
@@ -40,10 +57,13 @@ def main():
         for pos, txt in questions:
             print "%2d: %s" % (pos, txt)
 
-        answer = tui.editLine("", "Select topic or enter search term (empty input to quit): ")
+        answer = showPrompt(hasTopic=len(matches) > 0)
 
         if answer.isdigit():
             index = int(answer) - 1
+            if index < 0 or index >= len(matches):
+                tui.error("Wrong topic number")
+                continue
             source, keyword = matches[index]
             showDoc(source, keyword)
         elif answer == "":
@@ -52,7 +72,4 @@ def main():
             term = answer
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print
+    main()
