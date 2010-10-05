@@ -21,7 +21,7 @@ def showPrompt(hasTopic):
         prompt = "Enter topic number or search term"
     else:
         prompt = "Enter search term"
-    prompt += " (empty imput or 'q' to quit): "
+    prompt += " (empty input or 'q' to quit): "
     try:
         answer = tui.editLine("", prompt)
     except KeyboardInterrupt:
