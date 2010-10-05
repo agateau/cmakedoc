@@ -43,7 +43,12 @@ def main():
         questions.append(("s", "Search"))
         questions.append(("q", "Quit"))
 
-        answer = tui.selectFromList("Select topic", questions, default=None)
+        try:
+            answer = tui.selectFromList("Select topic", questions, default=None)
+        except KeyboardInterrupt:
+            print
+            return
+
         if answer is None or answer == "q":
             return
         elif answer == "s":
