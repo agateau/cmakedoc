@@ -10,8 +10,8 @@ def findMatches(source, term):
     return [line.strip() for line in out.splitlines() if term in line.lower()]
 
 
-def showDoc(source, term):
-    p1 = subprocess.Popen(["cmake", "--help-%s" % source, term], stdout=subprocess.PIPE)
+def showDoc(source, keyword):
+    p1 = subprocess.Popen(["cmake", "--help-%s" % source, keyword], stdout=subprocess.PIPE)
     p2 = subprocess.Popen(["less"], stdin=p1.stdout)
     p2.wait()
 
@@ -20,8 +20,8 @@ def main():
     if len(sys.argv) > 1:
         term = sys.argv[1]
     else:
-        term = tui.editLine(None, "Enter search term: ")
-        if term is None:
+        term = tui.editLine("", "Enter search term (empty input to quit): ")
+        if term == "":
             return
 
     while True:
@@ -30,9 +30,9 @@ def main():
         index = 1
         for source in SOURCES:
             lst = findMatches(source, term.lower())
-            for entry in lst:
-                matches.append((source, entry))
-                questions.append((index, "%s (%s)" % (entry, source)))
+            for keyword in lst:
+                matches.append((source, keyword))
+                questions.append((index, "%s (%s)" % (keyword, source)))
                 index += 1
         if len(matches) == 0:
             tui.error("No match found")
@@ -40,13 +40,15 @@ def main():
         for pos, txt in questions:
             print "%2d: %s" % (pos, txt)
 
-        answer = tui.editLine(None, "Select topic or enter search term: ")
+        answer = tui.editLine("", "Select topic or enter search term (empty input to quit): ")
 
         if answer.isdigit():
             index = int(answer) - 1
-            match = matches[index]
-            showDoc(*match)
-        elif answer != "":
+            source, keyword = matches[index]
+            showDoc(source, keyword)
+        elif answer == "":
+            return
+        else:
             term = answer
 
 if __name__ == "__main__":
