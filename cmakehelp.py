@@ -7,6 +7,7 @@ SOURCES = ["command", "module", "variable"]
 
 def findMatches(source, term):
     out, err = subprocess.Popen(["cmake", "--help-%s-list" % source], stdout=subprocess.PIPE).communicate()
+    term = term.lower()
     return [line.strip() for line in out.splitlines() if term in line.lower()]
 
 
