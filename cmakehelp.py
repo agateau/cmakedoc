@@ -1,4 +1,10 @@
 #!/usr/bin/env python
+"""
+cmake documentation reader
+
+@author: Aurélien Gâteau <aurelien.gateau@free.fr>
+@license: GPLv3
+"""
 import sys
 import subprocess
 import tui
