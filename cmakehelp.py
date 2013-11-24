@@ -10,7 +10,7 @@ import sys
 import subprocess
 import tui
 
-SOURCES = ["command", "module", "variable"]
+SOURCES = ["command", "module", "variable", "property"]
 
 def findMatches(source, term):
     out, err = subprocess.Popen(["cmake", "--help-%s-list" % source], stdout=subprocess.PIPE).communicate()
