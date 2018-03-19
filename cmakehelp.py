@@ -8,9 +8,22 @@ cmake documentation reader
 """
 import sys
 import subprocess
-import tui
+
+__appname__ = "cmakehelp"
+__version__ = "1.0.0"
+__license__ = "GPLv3"
+
+DESCRIPTION = """\
+cmakehelp makes it easier to search CMake reference documentation. Just enter
+any term to get a list of the matching command, module, variable or property.
+You can then select the topic you want and read it.
+"""
 
 SOURCES = ["command", "module", "variable", "property"]
+
+
+def error(message):
+    print("Error: {}".format(message))
 
 
 def find_matches(source, term):
@@ -30,12 +43,12 @@ def show_doc(source, keyword):
 
 def show_prompt(has_topic):
     if has_topic:
-        prompt = "Enter topic number or search term"
+        message = "Enter topic number or search term"
     else:
-        prompt = "Enter search term"
-    prompt += " (empty input or 'q' to quit): "
+        message = "Enter search term"
+    message += " (empty input or 'q' to quit): "
     try:
-        answer = tui.edit_line("", prompt)
+        answer = input(message)
     except KeyboardInterrupt:
         print()
         return None
@@ -70,15 +83,15 @@ def main():
             for pos, txt in questions:
                 print("%2d: %s" % (pos, txt))
         else:
-            tui.error("No match found")
-        print
+            error("No match found.")
+        print()
 
         answer = show_prompt(has_topic=len(matches) > 0)
 
         if answer.isdigit():
             index = int(answer) - 1
             if index < 0 or index >= len(matches):
-                tui.error("Wrong topic number")
+                error("Wrong topic number")
                 continue
             source, keyword = matches[index]
             show_doc(source, keyword)
