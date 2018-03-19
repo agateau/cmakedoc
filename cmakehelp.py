@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 """
 cmake documentation reader
@@ -15,7 +15,7 @@ SOURCES = ["command", "module", "variable", "property"]
 def findMatches(source, term):
     out, err = subprocess.Popen(["cmake", "--help-%s-list" % source], stdout=subprocess.PIPE).communicate()
     term = term.lower()
-    return [line.strip() for line in out.splitlines() if term in line.lower()]
+    return [line.strip() for line in str(out, "utf-8").splitlines() if term in line.lower()]
 
 
 def showDoc(source, keyword):
@@ -33,7 +33,7 @@ def showPrompt(hasTopic):
     try:
         answer = tui.editLine("", prompt)
     except KeyboardInterrupt:
-        print
+        print()
         return None
     answer = answer.lower()
     if answer == "q":
@@ -61,10 +61,10 @@ def main():
                 index += 1
 
         if len(matches) > 0:
-            print
-            print "# Matching topics:"
+            print()
+            print("# Matching topics:")
             for pos, txt in questions:
-                print "%2d: %s" % (pos, txt)
+                print("%2d: %s" % (pos, txt))
         else:
             tui.error("No match found")
         print

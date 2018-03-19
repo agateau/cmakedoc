@@ -39,24 +39,6 @@ stdout = IOStream(sys.stdout)
 stderr = IOStream(sys.stderr)
 
 
-def editText(text):
-    """Edit text with external editor
-    @return: newText"""
-    (fd, name) = tempfile.mkstemp(suffix=".txt", prefix="yokadi-")
-    try:
-        fl = file(name, "w")
-        fl.write(text.encode(ENCODING))
-        fl.close()
-        editor = os.environ.get("EDITOR", "vi")
-        retcode = subprocess.call([editor, name])
-        if retcode != 0:
-            raise Exception()
-        return unicode(file(name).read(), ENCODING)
-    finally:
-        os.close(fd)
-        os.unlink(name)
-
-
 def reinjectInRawInput(line):
     """Next call to raw_input() will have line set as default text
     @param line: The default text
@@ -84,7 +66,7 @@ def editLine(line, prompt="edit> "):
         line = _answers.pop(0)
     else:
         try:
-            line = raw_input(prompt)
+            line = input(prompt)
         except EOFError:
             line=""
 
@@ -96,14 +78,14 @@ def editLine(line, prompt="edit> "):
         if length > 0:
             readline.remove_history_item(length - 1)
 
-    return line.decode(ENCODING)
+    return line
 
 
 def selectFromList(prompt, lst, default):
     keys = []
     for key, entry in lst:
         key = str(key)
-        print "%3s: %s" % (key, entry)
+        print("%3s: %s" % (key, entry))
         keys.append(key)
 
     while True:
@@ -149,34 +131,16 @@ def confirm(prompt):
             error("Wrong value")
 
 
-def renderFields(fields):
-    """Print on screen tabular array represented by fields
-    @param fields: list of tuple (caption, value)
-    """
-    maxWidth = max([len(x) for x,y in fields])
-    format=C.BOLD+"%" + str(maxWidth) + "s"+C.RESET+": %s"
-    for caption, value in fields:
-        print >>stdout, format % (caption, value)
-
-def warnDeprecated(old, new):
-    """Warn user that a command is now deprecated
-    and incitate him to use the new one
-    @param old: the old one (str)
-    @param new: the new one (str)"""
-    warning("Command '%s' is deprecated, use '%s' instead" % (old, new))
-    info("Command %s has been executed" % new)
-
-
 def error(message):
-    print >>stderr, C.BOLD + C.RED + "Error: %s" % message + C.RESET
+    print(C.BOLD + C.RED + "Error: %s" % message + C.RESET, file=stderr)
 
 
 def warning(message):
-    print >>stderr, C.RED + "Warning: " + C.RESET + message
+    print(C.RED + "Warning: " + C.RESET + message, file=stderr)
 
 
 def info(message):
-    print >>stderr, C.CYAN + "Info: " + C.RESET + message
+    print(C.CYAN + "Info: " + C.RESET + message, file=stderr)
 
 
 def addInputAnswers(*answers):
