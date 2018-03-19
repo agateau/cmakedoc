@@ -12,14 +12,18 @@ import tui
 
 SOURCES = ["command", "module", "variable", "property"]
 
+
 def findMatches(source, term):
-    out, err = subprocess.Popen(["cmake", "--help-%s-list" % source], stdout=subprocess.PIPE).communicate()
+    out, err = subprocess.Popen(["cmake", "--help-%s-list" % source],
+                                stdout=subprocess.PIPE).communicate()
     term = term.lower()
-    return [line.strip() for line in str(out, "utf-8").splitlines() if term in line.lower()]
+    lines = str(out, "utf-8").splitlines()
+    return [x.strip() for x in lines if term in x.lower()]
 
 
 def showDoc(source, keyword):
-    p1 = subprocess.Popen(["cmake", "--help-%s" % source, keyword], stdout=subprocess.PIPE)
+    p1 = subprocess.Popen(["cmake", "--help-%s" % source, keyword],
+                          stdout=subprocess.PIPE)
     p2 = subprocess.Popen(["less"], stdin=p1.stdout)
     p2.wait()
 
@@ -39,7 +43,7 @@ def showPrompt(hasTopic):
     if answer == "q":
         return ""
     return answer
-    
+
 
 def main():
     if len(sys.argv) > 1:
@@ -82,6 +86,7 @@ def main():
             return
         else:
             term = answer
+
 
 if __name__ == "__main__":
     main()

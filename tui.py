@@ -6,21 +6,20 @@ Helper functions to build CLI applications
 @license: GPLv3
 """
 
-import os
 import readline
-import subprocess
 import sys
-import tempfile
 import locale
 
 import colors as C
 
 # Default user encoding. Used to decode all input strings
-# This is the central yokadi definition of encoding - this constant is imported from all other modules
-# Beware of circular import definition when add dependencies to this module
-ENCODING=locale.getpreferredencoding()
+# This is the central yokadi definition of encoding - this constant is imported
+# from all other modules Beware of circular import definition when add
+# dependencies to this module
+ENCODING = locale.getpreferredencoding()
 
 _answers = []
+
 
 class IOStream:
     def __init__(self, original_flow):
@@ -28,12 +27,13 @@ class IOStream:
         if sys.platform == 'win32':
             import pyreadline
             self.__console = pyreadline.GetOutputFile()
-        
+
     def write(self, text):
         if sys.platform == 'win32':
             self.__console.write_color(text)
         else:
             self.__original_flow.write(text)
+
 
 stdout = IOStream(sys.stdout)
 stderr = IOStream(sys.stderr)
@@ -60,7 +60,7 @@ def reinjectInRawInput(line):
 def editLine(line, prompt="edit> "):
     """Edit a line using readline"""
     if line:
-       reinjectInRawInput(line)
+        reinjectInRawInput(line)
 
     if len(_answers) > 0:
         line = _answers.pop(0)
@@ -68,7 +68,7 @@ def editLine(line, prompt="edit> "):
         try:
             line = input(prompt)
         except EOFError:
-            line=""
+            line = ""
 
     # Remove edited line from history:
     #   oddly, get_history_item is 1-based,
@@ -94,7 +94,7 @@ def selectFromList(prompt, lst, default):
         else:
             line = str(default)
 
-        answer = editLine(line, prompt = prompt + ": ")
+        answer = editLine(line, prompt=prompt + ": ")
         if answer == "":
             return None
         if answer in keys:
@@ -102,25 +102,9 @@ def selectFromList(prompt, lst, default):
         error("Wrong value")
 
 
-def enterInt(prompt, default):
-    if default is None:
-        line = ""
-    else:
-        line = str(default)
-    while True:
-        answer = editLine(line, prompt = prompt + ": ")
-        if answer == "":
-            return None
-        try:
-            value = int(answer)
-            return value
-        except ValueError:
-            error("Wrong value")
-
-
 def confirm(prompt):
     while True:
-        answer = editLine("", prompt = prompt + " (y/n)? ")
+        answer = editLine("", prompt=prompt + " (y/n)? ")
         answer = answer.lower()
 
         if answer == "y":
@@ -156,18 +140,5 @@ def clearInputAnswers():
     """
     global _answers
     _answers = []
-
-
-def getTermWidth():
-    """Gets the terminal width. Works only on Unix system.
-    @return: terminal width or "120" is system not supported
-    Kindly borrowed from pysql code"""
-    if os.name=="posix":
-        result=os.popen("tput cols").readline().strip()
-        if result:
-            return int(result)
-    else:
-        # Unsupported system, use default 120
-        return 120
 
 # vi: ts=4 sw=4 et
