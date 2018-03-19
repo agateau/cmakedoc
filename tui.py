@@ -39,8 +39,8 @@ stdout = IOStream(sys.stdout)
 stderr = IOStream(sys.stderr)
 
 
-def reinjectInRawInput(line):
-    """Next call to raw_input() will have line set as default text
+def reinject_input(line):
+    """Next call to input() will have line set as default text
     @param line: The default text
     """
 
@@ -57,10 +57,10 @@ def reinjectInRawInput(line):
         readline.set_pre_input_hook(pre_input_hook)
 
 
-def editLine(line, prompt="edit> "):
+def edit_line(line, prompt="edit> "):
     """Edit a line using readline"""
     if line:
-        reinjectInRawInput(line)
+        reinject_input(line)
 
     if len(_answers) > 0:
         line = _answers.pop(0)
@@ -81,40 +81,6 @@ def editLine(line, prompt="edit> "):
     return line
 
 
-def selectFromList(prompt, lst, default):
-    keys = []
-    for key, entry in lst:
-        key = str(key)
-        print("%3s: %s" % (key, entry))
-        keys.append(key)
-
-    while True:
-        if default is None:
-            line = ""
-        else:
-            line = str(default)
-
-        answer = editLine(line, prompt=prompt + ": ")
-        if answer == "":
-            return None
-        if answer in keys:
-            return answer
-        error("Wrong value")
-
-
-def confirm(prompt):
-    while True:
-        answer = editLine("", prompt=prompt + " (y/n)? ")
-        answer = answer.lower()
-
-        if answer == "y":
-            return True
-        elif answer == "n":
-            return False
-        else:
-            error("Wrong value")
-
-
 def error(message):
     print(C.BOLD + C.RED + "Error: %s" % message + C.RESET, file=stderr)
 
@@ -127,14 +93,14 @@ def info(message):
     print(C.CYAN + "Info: " + C.RESET + message, file=stderr)
 
 
-def addInputAnswers(*answers):
-    """Add answers to tui internal answer buffer. Next call to editLine() will
+def add_input_answers(*answers):
+    """Add answers to tui internal answer buffer. Next call to edit_line() will
     pop the first answer from the buffer instead of prompting the user.
     This is useful for unit-testing."""
     _answers.extend(answers)
 
 
-def clearInputAnswers():
+def clear_input_answers():
     """Remove all added answers. Useful to avoid making a test depend on a "y"
     added by another test.
     """

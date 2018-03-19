@@ -13,7 +13,7 @@ import tui
 SOURCES = ["command", "module", "variable", "property"]
 
 
-def findMatches(source, term):
+def find_matches(source, term):
     out, err = subprocess.Popen(["cmake", "--help-%s-list" % source],
                                 stdout=subprocess.PIPE).communicate()
     term = term.lower()
@@ -21,21 +21,21 @@ def findMatches(source, term):
     return [x.strip() for x in lines if term in x.lower()]
 
 
-def showDoc(source, keyword):
+def show_doc(source, keyword):
     p1 = subprocess.Popen(["cmake", "--help-%s" % source, keyword],
                           stdout=subprocess.PIPE)
     p2 = subprocess.Popen(["less"], stdin=p1.stdout)
     p2.wait()
 
 
-def showPrompt(hasTopic):
-    if hasTopic:
+def show_prompt(has_topic):
+    if has_topic:
         prompt = "Enter topic number or search term"
     else:
         prompt = "Enter search term"
     prompt += " (empty input or 'q' to quit): "
     try:
-        answer = tui.editLine("", prompt)
+        answer = tui.edit_line("", prompt)
     except KeyboardInterrupt:
         print()
         return None
@@ -49,7 +49,7 @@ def main():
     if len(sys.argv) > 1:
         term = sys.argv[1]
     else:
-        term = showPrompt(hasTopic=False)
+        term = show_prompt(has_topic=False)
         if term is "":
             return
 
@@ -58,7 +58,7 @@ def main():
         matches = []
         index = 1
         for source in SOURCES:
-            lst = findMatches(source, term)
+            lst = find_matches(source, term)
             for keyword in lst:
                 matches.append((source, keyword))
                 questions.append((index, "%s (%s)" % (keyword, source)))
@@ -73,7 +73,7 @@ def main():
             tui.error("No match found")
         print
 
-        answer = showPrompt(hasTopic=len(matches) > 0)
+        answer = show_prompt(has_topic=len(matches) > 0)
 
         if answer.isdigit():
             index = int(answer) - 1
@@ -81,7 +81,7 @@ def main():
                 tui.error("Wrong topic number")
                 continue
             source, keyword = matches[index]
-            showDoc(source, keyword)
+            show_doc(source, keyword)
         elif answer == "":
             return
         else:
