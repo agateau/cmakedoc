@@ -51,7 +51,7 @@ def show_prompt(has_topic):
         answer = input(message)
     except KeyboardInterrupt:
         print()
-        return None
+        return ""
     answer = answer.lower()
     if answer == "q":
         return ""
