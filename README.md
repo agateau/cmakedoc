@@ -23,4 +23,4 @@ selected topic with `less`.
 
 # Author
 
-Aurélien Gâteau <agateau@kde.org>
+Aurélien Gâteau <mail@agateau.com>
