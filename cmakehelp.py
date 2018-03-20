@@ -5,10 +5,10 @@ cmake documentation reader
 @author: Aurélien Gâteau <mail@agateau.com>
 @license: Apache 2.0
 """
+import argparse
 import os
 import shlex
 import subprocess
-import sys
 
 from collections import namedtuple
 
@@ -32,10 +32,19 @@ def error(message):
 
 
 def find_matches(source, term):
+    terms = term.lower().split(" ")
+
+    def match(line):
+        line = line.lower()
+        for term in terms:
+            if term not in line:
+                return False
+        return True
+
     out, err = subprocess.Popen(["cmake", "--help-%s-list" % source],
                                 stdout=subprocess.PIPE).communicate()
     lines = str(out, "utf-8").splitlines()
-    return [Match(source, x.strip()) for x in lines if term in x.lower()]
+    return [Match(source, x.strip()) for x in lines if match(x)]
 
 
 def show_doc(match):
@@ -64,8 +73,13 @@ def show_prompt(has_topic):
 
 
 def main():
-    if len(sys.argv) > 1:
-        term = sys.argv[1]
+    parser = argparse.ArgumentParser()
+    parser.description = DESCRIPTION
+    parser.add_argument("term", nargs="+", help="Search term")
+    args = parser.parse_args()
+
+    if args.term:
+        term = " ".join(args.term)
     else:
         term = show_prompt(has_topic=False)
         if term is "":
