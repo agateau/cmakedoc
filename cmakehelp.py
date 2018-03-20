@@ -29,7 +29,6 @@ def error(message):
 def find_matches(source, term):
     out, err = subprocess.Popen(["cmake", "--help-%s-list" % source],
                                 stdout=subprocess.PIPE).communicate()
-    term = term.lower()
     lines = str(out, "utf-8").splitlines()
     return [x.strip() for x in lines if term in x.lower()]
 
