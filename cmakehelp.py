@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-# -*- coding: UTF-8 -*-
 """
 cmake documentation reader
 
 @author: Aurélien Gâteau <mail@agateau.com>
-@license: GPLv3
+@license: Apache 2.0
 """
 import sys
 import subprocess
@@ -13,7 +12,7 @@ from collections import namedtuple
 
 __appname__ = "cmakehelp"
 __version__ = "1.0.0"
-__license__ = "GPLv3"
+__license__ = "Apache 2.0"
 
 DESCRIPTION = """\
 cmakehelp makes it easier to search CMake reference documentation. Just enter
