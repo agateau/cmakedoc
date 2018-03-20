@@ -5,8 +5,10 @@ cmake documentation reader
 @author: Aurélien Gâteau <mail@agateau.com>
 @license: Apache 2.0
 """
-import sys
+import os
+import shlex
 import subprocess
+import sys
 
 from collections import namedtuple
 
@@ -37,9 +39,10 @@ def find_matches(source, term):
 
 
 def show_doc(match):
+    pager = shlex.split(os.environ.get("PAGER", "less"))
     p1 = subprocess.Popen(["cmake", "--help-%s" % match.source, match.topic],
                           stdout=subprocess.PIPE)
-    p2 = subprocess.Popen(["less"], stdin=p1.stdout)
+    p2 = subprocess.Popen(pager, stdin=p1.stdout)
     p2.wait()
 
 

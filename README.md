@@ -4,7 +4,12 @@
 
 CMakeHelp is a command-line tool to read CMake documentation. It lets you
 search through CMake commands, modules, variables and properties before
-displaying the selected topic with `less`.
+displaying the selected topic with `less` or the pager defined in `$PAGER`.
+
+## Dependencies
+
+- `cmake` (obviously). Must be in `$PATH`.
+- Either `less`, or a pager defined in `$PAGER`.
 
 ## Installation
 
