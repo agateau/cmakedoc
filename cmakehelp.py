@@ -9,6 +9,8 @@ cmake documentation reader
 import sys
 import subprocess
 
+from collections import namedtuple
+
 __appname__ = "cmakehelp"
 __version__ = "1.0.0"
 __license__ = "GPLv3"
@@ -21,6 +23,8 @@ You can then select the topic you want and read it.
 
 SOURCES = ["command", "module", "variable", "property"]
 
+Match = namedtuple("Match", ("source", "topic"))
+
 
 def error(message):
     print("Error: {}".format(message))
@@ -30,11 +34,11 @@ def find_matches(source, term):
     out, err = subprocess.Popen(["cmake", "--help-%s-list" % source],
                                 stdout=subprocess.PIPE).communicate()
     lines = str(out, "utf-8").splitlines()
-    return [x.strip() for x in lines if term in x.lower()]
+    return [Match(source, x.strip()) for x in lines if term in x.lower()]
 
 
-def show_doc(source, keyword):
-    p1 = subprocess.Popen(["cmake", "--help-%s" % source, keyword],
+def show_doc(match):
+    p1 = subprocess.Popen(["cmake", "--help-%s" % match.source, match.topic],
                           stdout=subprocess.PIPE)
     p2 = subprocess.Popen(["less"], stdin=p1.stdout)
     p2.wait()
@@ -66,21 +70,15 @@ def main():
             return
 
     while True:
-        questions = []
         matches = []
-        index = 1
         for source in SOURCES:
-            lst = find_matches(source, term)
-            for keyword in lst:
-                matches.append((source, keyword))
-                questions.append((index, "%s (%s)" % (keyword, source)))
-                index += 1
+            matches.extend(find_matches(source, term))
 
-        if len(matches) > 0:
+        if matches:
             print()
             print("# Matching topics:")
-            for pos, txt in questions:
-                print("%2d: %s" % (pos, txt))
+            for idx, match in enumerate(matches):
+                print("%2d: %s (%s)" % (idx + 1, match.topic, match.source))
         else:
             error("No match found.")
         print()
@@ -92,8 +90,7 @@ def main():
             if index < 0 or index >= len(matches):
                 error("Wrong topic number")
                 continue
-            source, keyword = matches[index]
-            show_doc(source, keyword)
+            show_doc(matches[index])
         elif answer == "":
             return
         else:
