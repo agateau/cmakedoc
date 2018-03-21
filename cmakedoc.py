@@ -96,7 +96,7 @@ def main():
             for idx, match in enumerate(matches):
                 print("%2d: %s (%s)" % (idx + 1, match.topic, match.source))
         else:
-            error("No match found.")
+            error("no topics found.")
         print()
 
         answer = show_prompt(has_topic=len(matches) > 0)
@@ -104,7 +104,7 @@ def main():
         if answer.isdigit():
             index = int(answer) - 1
             if index < 0 or index >= len(matches):
-                error("Wrong topic number")
+                error("invalid topic number.")
                 continue
             show_doc(matches[index])
         elif answer == "":
