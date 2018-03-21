@@ -17,9 +17,7 @@ __version__ = "1.0.0"
 __license__ = "Apache 2.0"
 
 DESCRIPTION = """\
-cmakedoc makes it easier to search CMake reference documentation. Just enter
-any term to get a list of the matching command, module, variable or property.
-You can then select the topic you want and read it.
+cmakedoc makes it easier to search CMake reference documentation.
 """
 
 SOURCES = ["command", "module", "variable", "property"]

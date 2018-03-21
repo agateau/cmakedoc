@@ -3,10 +3,15 @@ from setuptools import setup
 
 import cmakedoc
 
+with open('README.md') as f:
+    long_description = f.read()
+
 setup(
     name=cmakedoc.__appname__,
     version=cmakedoc.__version__,
     description=cmakedoc.DESCRIPTION,
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     author='Aurélien Gâteau',
     author_email='mail@agateau.com',
     license=cmakedoc.__license__,
