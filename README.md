@@ -23,4 +23,10 @@ displaying the selected topic with `less` or the pager defined in `$PAGER`.
 
 ## Installation
 
+Using pip:
+
+    pip install cmakedoc
+
+Manually:
+
     ./setup.py install
