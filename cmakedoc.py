@@ -12,12 +12,12 @@ import subprocess
 
 from collections import namedtuple
 
-__appname__ = "cmakehelp"
+__appname__ = "cmakedoc"
 __version__ = "1.0.0"
 __license__ = "Apache 2.0"
 
 DESCRIPTION = """\
-cmakehelp makes it easier to search CMake reference documentation. Just enter
+cmakedoc makes it easier to search CMake reference documentation. Just enter
 any term to get a list of the matching command, module, variable or property.
 You can then select the topic you want and read it.
 """

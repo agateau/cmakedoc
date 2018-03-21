@@ -1,8 +1,8 @@
-# CMakeHelp
+# CMakeDoc
 
 ## What is it?
 
-CMakeHelp is a command-line tool to read CMake documentation. It lets you
+CMakeDoc is a command-line tool to read CMake documentation. It lets you
 search through CMake commands, modules, variables and properties before
 displaying the selected topic with `less` or the pager defined in `$PAGER`.
 
@@ -17,7 +17,7 @@ displaying the selected topic with `less` or the pager defined in `$PAGER`.
 
 ## "Screenshot"
 
-    user@host: cmakehelp pkg
+    user@host: cmakedoc pkg
 
     # Matching topics:
     1: FindPkgConfig (module)

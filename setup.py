@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 from setuptools import setup
 
-import cmakehelp
+import cmakedoc
 
 setup(
-    name=cmakehelp.__appname__,
-    version=cmakehelp.__version__,
-    description=cmakehelp.DESCRIPTION,
+    name=cmakedoc.__appname__,
+    version=cmakedoc.__version__,
+    description=cmakedoc.DESCRIPTION,
     author='Aurélien Gâteau',
     author_email='mail@agateau.com',
-    license=cmakehelp.__license__,
-    url='https://github.com/agateau/cmakehelp',
-    py_modules=['cmakehelp'],
+    license=cmakedoc.__license__,
+    url='https://github.com/agateau/cmakedoc',
+    py_modules=['cmakedoc'],
     entry_points={
         'console_scripts': [
-            'cmakehelp = cmakehelp:main',
+            'cmakedoc = cmakedoc:main',
         ],
     },
     classifiers=[
