@@ -10,7 +10,6 @@ setup(
     author='Aurélien Gâteau',
     author_email='mail@agateau.com',
     license=cmakehelp.__license__,
-    platforms=['Linux'],
     url='https://github.com/agateau/cmakehelp',
     py_modules=['cmakehelp'],
     entry_points={
@@ -24,7 +23,9 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: POSIX :: Linux',
+        'Operating System :: MacOS :: MacOS X',
         'Programming Language :: Python :: 3',
         'Topic :: Software Development :: Build Tools',
-    ]
+    ],
+    keywords='cmake doc development',
 )
