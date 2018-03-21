@@ -75,7 +75,7 @@ def show_prompt(has_topic):
 def main():
     parser = argparse.ArgumentParser()
     parser.description = DESCRIPTION
-    parser.add_argument("term", nargs="+", help="Search term")
+    parser.add_argument("term", nargs="*", help="Search term")
     args = parser.parse_args()
 
     if args.term:
