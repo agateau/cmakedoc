@@ -80,7 +80,7 @@ def main():
         term = " ".join(args.term)
     else:
         term = show_prompt(has_topic=False)
-        if term is "":
+        if term == "":
             return
 
     while True:
